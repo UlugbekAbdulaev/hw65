@@ -1,25 +1,25 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-
-import Navbar from './assets/Navbar.jsx'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import About from './assets/About.jsx'
+import Navbar from './assets/Navbar.jsx'
 import Footer from './assets/Footer.jsx'
-import Section from './assets/Section.jsx'
-import Contact from './assets/Contact.jsx'
-
+import Products from './assets/Products.jsx'
+import Frame from './assets/Frame.jsx'
+import Detail from './assets/Detail.jsx'
+import Begin from './assets/begin.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
 
     <BrowserRouter>
       <Navbar />
+      <Frame />
       <Routes>
-        <Route path="/" element={<Section />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
+        <Route path="/" element={<Begin />} />
+        <Route path='/product+categories' element={<Products />} />
+        <Route path='/Product_detail/:id' element={<Detail />} />
       </Routes>
-    <Footer/>
+      <Footer />
 
 
     </BrowserRouter>
