@@ -6,7 +6,7 @@ import Footer from './assets/Footer.jsx'
 import Products from './assets/Products.jsx'
 import Frame from './assets/Frame.jsx'
 import Detail from './assets/Detail.jsx'
-import Begin from './assets/begin.jsx'
+import Begin from './assets/Begin.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
