@@ -5,10 +5,11 @@ import { Link } from "react-router-dom";
 function Products() {
   const [products, setProducts] = useState([]);
 
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const productsResponse = await axios.get("https://dummyjson.com/products");
+        const productsResponse = await axios.get("https://dummyjson.com/products" );
         setProducts(productsResponse.data.products);
       } catch (error) {
         console.error("Xatolik yuz berdi:", error);
@@ -17,9 +18,25 @@ function Products() {
     fetchProducts();
   }, []);
 
+const searchProducts = async (search) => {
+  if (search.length > 3) {
+const res = await axios.get(`https://dummyjson.com/products/search?q=${search}`)
+setProducts(res.data?.products)
+}
+};
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Mahsulotlar</h2>
+
+      <div className="flex gap-1">
+        <input onChange={(val)=>{
+          searchProducts(val.target.value)
+         
+       
+        }} className="border py-1 px-3 my-2 " type="text" />
+        <button onClick={()=>{searchProducts()}} className="border py-1 px-3 my-2 rounded-lg bg-blue-500 text-white active:bg-blue-300">Search</button>
+      </div>
 
       <div className="grid grid-cols-4 gap-4">
         {products.map((product) => (

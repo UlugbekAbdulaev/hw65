@@ -2,22 +2,24 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+
 function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
 
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
 
-        const productsResponse = await axios.get("https://dummyjson.com/products");
+        const productsResponse = await axios.get("https://dummyjson.com/products " );
         setProducts(productsResponse.data.products);
         setFilteredProducts(productsResponse.data.products);
-
-
-        const categoriesResponse = await axios.get("https://dummyjson.com/products/categories");
+        
+        
+        const categoriesResponse = await axios.get("https://dummyjson.com/products/categories"  );
 
 
         const categoryList = Array.isArray(categoriesResponse.data)
@@ -38,19 +40,36 @@ function Products() {
       setFilteredProducts(products);
     } else {
       try {
-        const response = await axios.get(`https://dummyjson.com/products/category/${category}`);
+        const response = await axios.get(`https://dummyjson.com/products/category/${category}` );
         setFilteredProducts(response.data.products);
       } catch (error) {
         console.error("Kategoriya bo'yicha filterda xatolik:", error);
       }
     }
+
+  };
+
+  const searchProducts = async (search) => {
+    if (search.length > 3) {
+      const res = await axios.get(`https://dummyjson.com/products/search?q=${search}`)
+      setFilteredProducts(res.data?.products)
+    }
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 flex flex-col min-h-screen">
       <h2 className="text-2xl font-bold mb-4">Mahsulotlar</h2>
 
-      <div className="flex gap-4">
+      <div className="flex gap-1">
+        <input onChange={(val) => {
+          searchProducts(val.target.value)
+
+
+        }} className="border py-1 px-3 my-2 " type="text" />
+        <button onClick={() => { searchProducts() }} className="border py-1 px-3 my-2 rounded-lg bg-blue-500 text-white active:bg-blue-300">Search</button>
+      </div>
+
+      <div className=" flex gap-4">
 
         <div className="w-1/5 bg-gray-100 p-4 rounded-lg shadow">
           <h3 className="text-lg font-bold mb-2">Kategoriyalar</h3>
@@ -73,26 +92,39 @@ function Products() {
           ))}
         </div>
 
+        <div className="grid grid-cols-4 w-4/5 gap-4 ">
+          {
+            filteredProducts.length > 0 ?
+              filteredProducts.map((product) => (
 
-        <div className="grid grid-cols-4 w-4/5 gap-4 h-[300px] ">
-          {filteredProducts.map((product) => (
+                <div key={product.id} className="border hover:border-none p-4 rounded-lg shadow-lg hover:cursor-pointer hover:scale-105 transition-transform duration-300  hover:bg-blue-500 ">
+                  <img
+                    src={product.images[0]}
+                    alt={product.title}
+                    className="w-full h-48 object-contain mb-2"
+                  />
+                  <h3 className="text-lg font-semibold">{product.title}</h3>
+                  <p className="text-xl font-bold text-green-600">${product.price}</p>
+                  <Link to={`/Product_detail/${product.id}`} className="font-bold underline text-fuchsia-600">In Detail
+                  </Link>
+                </div>
 
-            <div key={product.id} className="border p-4 rounded-lg shadow-lg hover:cursor-pointer hover:scale-105 transition-transform duration-300  hover:bg-blue-500 ">
-              <img
-                src={product.images[0]}
-                alt={product.title}
-                className="w-full h-48 object-contain mb-2"
-              />
-              <h3 className="text-lg font-semibold">{product.title}</h3>
-              <p className="text-xl font-bold text-green-600">${product.price}</p>
-              <Link to={`/Product_detail/${product.id}`} className="font-bold underline text-blue-600">In Detail
-              </Link>
-            </div>
-
-          ))}
+              ))
+              :
+              <div className="text-center text-3xl text-red-600">
+                <h3>Mahsulotlar topilmadi!</h3>
+              </div>
+          }
+          
         </div>
+        
       </div>
+
+
+
     </div>
+
+    
   );
 }
 
