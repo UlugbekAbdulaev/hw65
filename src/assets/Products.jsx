@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import { CartList } from "./Context/Cartlist";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -9,6 +9,7 @@ function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
 
+  const {cartList, setCartList} = useContext(CartList)
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -54,6 +55,7 @@ function Products() {
       const res = await axios.get(`https://dummyjson.com/products/search?q=${search}`)
       setFilteredProducts(res.data?.products)
     }
+
   };
 
   return (
@@ -105,8 +107,13 @@ function Products() {
                   />
                   <h3 className="text-lg font-semibold">{product.title}</h3>
                   <p className="text-xl font-bold text-green-600">${product.price}</p>
-                  <Link to={`/Product_detail/${product.id}`} className="font-bold underline text-fuchsia-600">In Detail
-                  </Link>
+                  <Link to={`/Product_detail/${product.id}`} className="font-bold underline text-fuchsia-600">In Detail </Link>
+                <button onClick={()=>{
+                  let current = [...cartList]
+                  current.push(product)
+                  setCartList(current)
+                }} 
+                className="mt-4 ml-2 bg-green-500 text-white px-4 py-2 rounded-lg ">Buy Now</button>
                 </div>
 
               ))

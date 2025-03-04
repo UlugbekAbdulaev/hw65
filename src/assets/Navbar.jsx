@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import "../App.css"
 import { Link } from 'react-router-dom'
+import { CartList } from './Context/Cartlist'
 export default function Navbar() {
+
+const {cartList} = useContext(CartList)
+console.log(cartList);
+
+
   return (
-    <header className="text-white body-font bg-[#101828]">
+    <header className="text-white body-font bg-[#101828] sticky top-0 z-10">
       <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
         <a className="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
@@ -22,6 +28,10 @@ export default function Navbar() {
           <i className="fa-regular fa-star"></i>
           <i className="fa-regular fa-user"></i>
           <i className="fa-solid fa-bag-shopping"></i>
+          <div className='flex '>
+          <Link to={'/Savat'} className="fa-solid fa-shopping-cart"></Link><sup>{cartList.length}</sup>
+          </div>
+          
         </div>
 
 
